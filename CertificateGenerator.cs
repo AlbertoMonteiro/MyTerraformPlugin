@@ -34,6 +34,29 @@ public static class CertificateGenerator
         return keyPairGenerator.GenerateKeyPair().Private;
     }
 
+    //public static X509Certificate2 GerarCertificadoAutoAssinado(string subjectName)
+    //{
+    //    // Cria um par de chaves RSA
+    //    using (RSA rsa = RSA.Create())
+    //    {
+    //        // Define os parâmetros do pedido de certificado
+    //        var request = new CertificateRequest(subjectName, rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+    //        // Adiciona extensões ao certificado
+    //        request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, false)); // Não é uma autoridade (CA)
+    //        request.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(request.PublicKey, false)); // Identificador de chave pública
+
+    //        // Gera o certificado autoassinado
+    //        var certificado = request.CreateSelfSigned(
+    //            DateTimeOffset.UtcNow.AddDays(-1), // Data inicial de validade
+    //            DateTimeOffset.UtcNow.AddYears(1) // Data final de validade
+    //        );
+
+    //        // Cria e retorna o X509Certificate2 com a chave privada
+    //        return new X509Certificate2(certificado.Export(X509ContentType.Pkcs12));
+    //    }
+    //}
+
     public static X509Certificate2 GenerateSelfSignedCertificate(string subjectName, string issuerName, AsymmetricKeyParameter issuerPrivKey)
     {
         var randomGenerator = new CryptoApiRandomGenerator();

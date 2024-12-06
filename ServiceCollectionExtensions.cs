@@ -34,9 +34,10 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddTerraformProviderConfigurator<TConfig, TProviderConfigurator>(this IServiceCollection services)
         where TProviderConfigurator : IProviderConfigurator<TConfig>
+        where TConfig : ITerraformSchema
     {
         services.AddSingleton(s => new ProviderConfigurationRegistry(
-            ConfigurationSchema: s.GetRequiredService<ISchemaBuilder>().BuildSchema(typeof(TConfig)),
+            ConfigurationSchema: s.GetRequiredService<ISchemaBuilder>().BuildSchema<TConfig>(),
             ConfigurationType: typeof(TConfig)));
 
         services.AddTransient<IProviderConfigurator<TConfig>>(s => s.GetRequiredService<TProviderConfigurator>());

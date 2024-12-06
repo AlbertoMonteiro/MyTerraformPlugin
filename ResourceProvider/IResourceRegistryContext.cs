@@ -4,5 +4,6 @@ public interface IResourceRegistryContext
 {
     void RegisterResource<T>(string resourceName);
 
-    void RegisterDataSource<T>(string dataSourceName);
+    void RegisterDataSource<T>(string dataSourceName)
+        where T : ITerraformSchema;
 }

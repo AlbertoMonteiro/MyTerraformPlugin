@@ -19,10 +19,11 @@ class ServiceCollectionResourceRegistryContext : IResourceRegistryContext
     }
 
     public void RegisterDataSource<T>(string resourceName)
+        where T : ITerraformSchema
     {
         EnsureValidType<T>();
 
-        _services.AddSingleton(new DataSourceRegistryRegistration(resourceName, typeof(T)));
+        _services.AddSingleton<IEnumerable<(string, Schema, Type)>>([(resourceName, T.GetSchema(), typeof(T))]);
     }
 
     private static void EnsureValidType<T>()

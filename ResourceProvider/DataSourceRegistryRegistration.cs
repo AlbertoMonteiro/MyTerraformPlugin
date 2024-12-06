@@ -1,3 +1,7 @@
 ﻿namespace MyTerraformPlugin.ResourceProvider;
 
-record DataSourceRegistryRegistration(string ResourceName, Type Type);
+record DataSourceRegistryRegistration<T>(string ResourceName)
+        where T : ITerraformSchema
+{
+    public Schema Schema => T.GetSchema();
+}

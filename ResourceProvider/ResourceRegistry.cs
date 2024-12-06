@@ -1,4 +1,5 @@
-﻿using MyTerraformPlugin.Schemas;
+﻿#pragma warning disable
+using MyTerraformPlugin.Schemas;
 
 namespace MyTerraformPlugin.ResourceProvider;
 
@@ -7,17 +8,17 @@ class ResourceRegistry
     public ResourceRegistry(
         ISchemaBuilder schemaBulder,
         IEnumerable<ResourceRegistryRegistration> resourceRegistrations,
-        IEnumerable<DataSourceRegistryRegistration> dataSourceRegistrations)
+        IEnumerable<(string ResourceName, Schema schema, Type type)> dataSourceRegistrations)
     {
-        foreach (var registration in resourceRegistrations)
-        {
-            Schemas.Add(registration.ResourceName, schemaBulder.BuildSchema(registration.Type));
-            Types.Add(registration.ResourceName, registration.Type);
-        }
+        //foreach (var registration in resourceRegistrations)
+        //{
+        //    Schemas.Add(registration.ResourceName, schemaBulder.BuildSchema(registration.Type));
+        //    Types.Add(registration.ResourceName, registration.Type);
+        //}
         foreach (var registration in dataSourceRegistrations)
         {
-            DataSchemas.Add(registration.ResourceName, schemaBulder.BuildSchema(registration.Type));
-            DataTypes.Add(registration.ResourceName, registration.Type);
+            DataSchemas.Add(registration.ResourceName, registration.schema);
+            DataTypes.Add(registration.ResourceName, registration.type);
         }
     }
 

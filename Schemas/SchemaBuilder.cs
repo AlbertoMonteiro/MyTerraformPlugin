@@ -1,4 +1,5 @@
-﻿using Google.Protobuf;
+﻿#pragma warning disable
+using Google.Protobuf;
 using MyTerraformPlugin.Resources;
 using MyTerraformPlugin.Schemas.Types;
 using System.ComponentModel;
@@ -18,45 +19,44 @@ class SchemaBuilder : ISchemaBuilder
         _typeBuilder = typeBuilder;
     }
 
-    public Schema BuildSchema(Type type)
+    public Schema BuildSchema<T>()
+        where T : ITerraformSchema
     {
-        var schemaVersionAttribute = type.GetCustomAttribute<SchemaVersionAttribute>();
-        if (schemaVersionAttribute == null)
-        {
-            _logger.LogWarning($"Missing {nameof(SchemaVersionAttribute)} when generating schema for {type.FullName}.");
-        }
+        
 
-        var properties = type.GetProperties();
+        return T.GetSchema();
 
         var block = new Schema.Types.Block();
-        foreach (var property in properties)
-        {
-            var key = property.GetCustomAttribute<KeyAttribute>() ?? throw new InvalidOperationException($"Missing {nameof(KeyAttribute)} on {property.Name} in {type.Name}.");
 
-            var description = property.GetCustomAttribute<DescriptionAttribute>();
-            var required = TerraformTypeBuilder.IsRequiredAttribute(property);
-            var computed = property.GetCustomAttribute<ComputedAttribute>() != null;
-            var terraformType = _typeBuilder.GetTerraformType(property.PropertyType);
+        //var properties = type.GetProperties();
+        //foreach (var property in properties)
+        //{
+        //    var key = property.GetCustomAttribute<KeyAttribute>() ?? throw new InvalidOperationException($"Missing {nameof(KeyAttribute)} on {property.Name} in {type.Name}.");
 
-            if (terraformType is TerraformType.TfObject _ && !required)
-            {
-                throw new InvalidOperationException("Optional object types are not supported.");
-            }
+        //    var description = property.GetCustomAttribute<DescriptionAttribute>();
+        //    var required = TerraformTypeBuilder.IsRequiredAttribute(property);
+        //    var computed = property.GetCustomAttribute<ComputedAttribute>() != null;
+        //    var terraformType = _typeBuilder.GetTerraformType(property.PropertyType);
 
-            block.Attributes.Add(new Schema.Types.Attribute
-            {
-                Name = key.StringKey,
-                Type = ByteString.CopyFromUtf8(terraformType.ToJson()),
-                Description = description?.Description,
-                Optional = !required,
-                Required = required,
-                Computed = computed,
-            });
-        }
+        //    if (terraformType is TerraformType.TfObject _ && !required)
+        //    {
+        //        throw new InvalidOperationException("Optional object types are not supported.");
+        //    }
+
+        //    block.Attributes.Add(new Schema.Types.Attribute
+        //    {
+        //        Name = key.StringKey,
+        //        Type = ByteString.CopyFromUtf8(terraformType.ToJson()),
+        //        Description = description?.Description,
+        //        Optional = !required,
+        //        Required = required,
+        //        Computed = computed,
+        //    });
+        //}
 
         return new Schema
         {
-            Version = schemaVersionAttribute?.SchemaVersion ?? 0,
+            Version = 1,
             Block = block,
         };
     }
