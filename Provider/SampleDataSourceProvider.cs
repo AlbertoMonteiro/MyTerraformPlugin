@@ -15,7 +15,7 @@ public class SampleDataSourceProvider : IDataSourceProvider<SampleDataSource>
     {
         return Task.FromResult(new SampleDataSource
         {
-            Id = request.Id,
+            Id = $"{request.Id} from .NET",
             Data = _configurator.Config?.Data ?? "No dummy data configured",
         });
     }
