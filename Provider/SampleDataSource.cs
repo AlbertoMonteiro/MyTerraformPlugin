@@ -1,5 +1,7 @@
 ﻿using MessagePack;
+using MyTerraformPlugin.ResourceProvider;
 using MyTerraformPlugin.Resources;
+using MyTerraformPlugin.Schemas.Types;
 using MyTerraformPlugin.Serialization;
 
 namespace MyTerraformPlugin;
@@ -11,7 +13,7 @@ public class SampleDataSource : ITerraformDataSource
     [Key("id")]
     [Required]
     [MessagePackFormatter(typeof(ComputedStringValueFormatter))]
-    public string? Id { get; set; }
+    public required string Id { get; set; }
 
     [Key("data")]
     [MessagePackFormatter(typeof(ComputedStringValueFormatter))]

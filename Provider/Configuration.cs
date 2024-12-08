@@ -1,14 +1,17 @@
-﻿using Google.Protobuf;
-using MessagePack;
-using System.ComponentModel;
+﻿using MessagePack;
+using MyTerraformPlugin.Resources;
+using MyTerraformPlugin.Schemas;
+using MyTerraformPlugin.Schemas.Types;
+using MyTerraformPlugin.Serialization;
 
 namespace MyTerraformPlugin;
 
+[SchemaVersion(1)]
 [MessagePackObject]
 public class Configuration : ITerraformSchema
 {
     [Key("dummy_data")]
-    [Description("Dummy data returned by the data source provider.")]
+    [MessagePackFormatter(typeof(ComputedStringValueFormatter))]
     public string? Data { get; set; }
 
     public Schema GetSchema()

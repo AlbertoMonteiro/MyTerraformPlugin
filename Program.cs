@@ -2,10 +2,9 @@ using MyTerraformPlugin;
 using MyTerraformPlugin.ResourceProvider;
 using MyTerraformPlugin.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateSlimBuilder(args);
 
-var certificate = CertificateGenerator.GenerateSelfSignedCertificate("CN=127.0.0.1", "CN=root ca", CertificateGenerator.GeneratePrivateKey());
-//var certificate = CertificateGenerator.GerarCertificadoAutoAssinado("CN=127.0.0.1");
+var certificate = CertificateGenerator.GenerateSelfSignedCertificate("CN=127.0.0.1", "CN=root ca");
 
 builder.WebHost.ConfigureKestrel(x =>
     x.ListenLocalhost(5344, x => x.UseHttps(x =>
@@ -20,13 +19,11 @@ builder.Logging.ClearProviders();
 var services = builder.Services;
 services.AddGrpc();
 services.AddTerraformPluginCore();
-//var registry = services.AddTerraformResourceRegistry();
 
 services.AddSingleton(new Configuration());
 services.AddTerraformProviderConfigurator<SampleConfigurator>();
 services.AddSingleton<ITerraformDataSource, SampleDataSource>();
 services.AddSingleton<IDataSourceProvider, SampleDataSourceProvider>();
-//registry.RegisterDataSource<SampleDataSource>("dotnetsample_data");
 
 var app = builder.Build();
 

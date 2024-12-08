@@ -1,4 +1,4 @@
-﻿namespace MyTerraformPlugin;
+﻿namespace MyTerraformPlugin.Schemas;
 
 public interface ITerraformSchema
 {

@@ -1,6 +1,6 @@
 ﻿using Google.Protobuf;
 
-namespace MyTerraformPlugin;
+namespace MyTerraformPlugin.Schemas.Types;
 
 public static class TfTypes
 {
