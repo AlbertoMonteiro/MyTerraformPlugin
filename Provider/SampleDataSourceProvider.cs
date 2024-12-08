@@ -1,22 +1,33 @@
 ﻿using MyTerraformPlugin.ResourceProvider;
+using MyTerraformPlugin.Serialization;
 
 namespace MyTerraformPlugin;
 
-public class SampleDataSourceProvider : IDataSourceProvider<SampleDataSource>
+public class SampleDataSourceProvider(IDynamicValueSerializer serializer, Configuration configuration) : IDataSourceProvider
 {
-    private readonly SampleConfigurator _configurator;
+    private readonly IDynamicValueSerializer _serializer = serializer;
 
-    public SampleDataSourceProvider(SampleConfigurator configurator)
-    {
-        _configurator = configurator;
-    }
+    public string Name { get; } = "sampledata";
 
     public Task<SampleDataSource> ReadAsync(SampleDataSource request)
     {
         return Task.FromResult(new SampleDataSource
         {
             Id = $"{request.Id} from .NET",
-            Data = _configurator.Config?.Data ?? "No dummy data configured",
+            Data = configuration.Data ?? "No dummy data configured",
         });
+    }
+
+    public async Task<ReadDataSource.Types.Response> ReadDataSource(ReadDataSource.Types.Request request)
+    {
+        var current = _serializer.DeserializeDynamicValue<SampleDataSource>(request.Config);
+
+        var read = await ReadAsync(current);
+        var readSerialized = _serializer.SerializeDynamicValue(read);
+
+        return new ReadDataSource.Types.Response
+        {
+            State = readSerialized,
+        };
     }
 }

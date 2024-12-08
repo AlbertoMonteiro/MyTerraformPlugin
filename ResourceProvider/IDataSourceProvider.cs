@@ -1,6 +1,8 @@
 ﻿namespace MyTerraformPlugin.ResourceProvider;
 
-public interface IDataSourceProvider<T>
+public interface IDataSourceProvider
 {
-    Task<T> ReadAsync(T request);
+    Task<ReadDataSource.Types.Response> ReadDataSource(ReadDataSource.Types.Request request);
+
+    string Name { get; }
 }

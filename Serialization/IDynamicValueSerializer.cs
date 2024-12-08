@@ -1,10 +1,9 @@
-﻿namespace MyTerraformPlugin.Serialization;
+﻿
+namespace MyTerraformPlugin.Serialization;
 
 public interface IDynamicValueSerializer
 {
+    T DeserializeDynamicValue<T>(DynamicValue value);
     T DeserializeJson<T>(ReadOnlyMemory<byte> value);
-
-    T DeserializeMsgPack<T>(ReadOnlyMemory<byte> value);
-
-    byte[] SerializeMsgPack<T>(T value);
+    DynamicValue SerializeDynamicValue<T>(T value);
 }

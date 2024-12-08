@@ -2,5 +2,5 @@
 
 public interface ITerraformSchema
 {
-    static abstract Schema GetSchema();
+    Schema GetSchema();
 }

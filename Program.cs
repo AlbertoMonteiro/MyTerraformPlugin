@@ -20,12 +20,13 @@ builder.Logging.ClearProviders();
 var services = builder.Services;
 services.AddGrpc();
 services.AddTerraformPluginCore();
-var registry = services.AddTerraformResourceRegistry();
+//var registry = services.AddTerraformResourceRegistry();
 
-services.AddSingleton<SampleConfigurator>();
-services.AddTerraformProviderConfigurator<Configuration, SampleConfigurator>();
-services.AddSingleton<IDataSourceProvider<SampleDataSource>, SampleDataSourceProvider>();
-registry.RegisterDataSource<SampleDataSource>("dotnetsample_data");
+services.AddSingleton(new Configuration());
+services.AddTerraformProviderConfigurator<SampleConfigurator>();
+services.AddSingleton<ITerraformDataSource, SampleDataSource>();
+services.AddSingleton<IDataSourceProvider, SampleDataSourceProvider>();
+//registry.RegisterDataSource<SampleDataSource>("dotnetsample_data");
 
 var app = builder.Build();
 
