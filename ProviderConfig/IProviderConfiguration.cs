@@ -2,7 +2,7 @@
 
 public interface IProviderConfiguration
 {
-    ValueTask ConfigureAsync(Configure.Types.Request request);
+    ValueTask ConfigureAsync(ConfigureProvider.Types.Request request);
 
     Schema GetConfigurationSchema();
 }

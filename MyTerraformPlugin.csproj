@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\tfplugin5.2.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\tfplugin6.5.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>

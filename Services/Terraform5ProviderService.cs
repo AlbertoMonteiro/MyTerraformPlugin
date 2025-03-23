@@ -19,22 +19,22 @@ internal class Terraform5ProviderService : Provider.ProviderBase
         _dataSourceFinder = dataSourceFinder;
     }
 
-    public override async Task<Configure.Types.Response> Configure(Configure.Types.Request request, ServerCallContext context)
+    public override async Task<ConfigureProvider.Types.Response> ConfigureProvider(ConfigureProvider.Types.Request request, ServerCallContext context)
     {
         //return Task.FromResult(new Configure.Types.Response { });
         try
         {
             if (_providerConfiguration is null)
             {
-                return new Configure.Types.Response { };
+                return new ConfigureProvider.Types.Response { };
             }
 
             await _providerConfiguration.ConfigureAsync(request);
-            return new Configure.Types.Response { };
+            return new ConfigureProvider.Types.Response { };
         }
         catch (Exception ex)
         {
-            return new Configure.Types.Response
+            return new ConfigureProvider.Types.Response
             {
                 Diagnostics =
                 {
@@ -44,7 +44,7 @@ internal class Terraform5ProviderService : Provider.ProviderBase
         }
     }
 
-    public override Task<GetProviderSchema.Types.Response> GetSchema(GetProviderSchema.Types.Request request, ServerCallContext context)
+    public override Task<GetProviderSchema.Types.Response> GetProviderSchema(GetProviderSchema.Types.Request request, ServerCallContext context)
     {
         var res = new GetProviderSchema.Types.Response
         {
@@ -104,18 +104,22 @@ internal class Terraform5ProviderService : Provider.ProviderBase
                     },
     });
 
-    public override Task<PrepareProviderConfig.Types.Response> PrepareProviderConfig(PrepareProviderConfig.Types.Request request, ServerCallContext context) => Task.FromResult(new PrepareProviderConfig.Types.Response());
+    public override Task<ValidateProviderConfig.Types.Response> ValidateProviderConfig(ValidateProviderConfig.Types.Request request, ServerCallContext context) => Task.FromResult(new ValidateProviderConfig.Types.Response());
 
-    public override Task<Stop.Types.Response> Stop(Stop.Types.Request request, ServerCallContext context)
+    public override Task<StopProvider.Types.Response> StopProvider(StopProvider.Types.Request request, ServerCallContext context)
     {
         _lifetime.StopApplication();
         _ = _lifetime.ApplicationStopped.WaitHandle.WaitOne();
-        return Task.FromResult(new Stop.Types.Response());
+        return Task.FromResult(new StopProvider.Types.Response());
     }
 
-    public override Task<ValidateDataSourceConfig.Types.Response> ValidateDataSourceConfig(ValidateDataSourceConfig.Types.Request request, ServerCallContext context) => Task.FromResult(new ValidateDataSourceConfig.Types.Response());
+    public override Task<GetFunctions.Types.Response> GetFunctions(GetFunctions.Types.Request request, ServerCallContext context) => Task.FromResult(new GetFunctions.Types.Response());
 
-    public override Task<ValidateResourceTypeConfig.Types.Response> ValidateResourceTypeConfig(ValidateResourceTypeConfig.Types.Request request, ServerCallContext context) => Task.FromResult(new ValidateResourceTypeConfig.Types.Response());
+    public override Task<CallFunction.Types.Response> CallFunction(CallFunction.Types.Request request, ServerCallContext context) => Task.FromResult(new CallFunction.Types.Response());
+
+    public override Task<ValidateDataResourceConfig.Types.Response> ValidateDataResourceConfig(ValidateDataResourceConfig.Types.Request request, ServerCallContext context) => Task.FromResult(new ValidateDataResourceConfig.Types.Response());
+
+    public override Task<ValidateResourceConfig.Types.Response> ValidateResourceConfig(ValidateResourceConfig.Types.Request request, ServerCallContext context) => Task.FromResult(new ValidateResourceConfig.Types.Response());
 
     public override async Task<ReadDataSource.Types.Response> ReadDataSource(ReadDataSource.Types.Request request, ServerCallContext context)
     {

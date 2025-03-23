@@ -9,7 +9,7 @@ public class SampleConfigurator(IDynamicValueSerializer serializer, Configuratio
 
     public Configuration Config { get; private set; } = config;
 
-    public ValueTask ConfigureAsync(Configure.Types.Request request)
+    public ValueTask ConfigureAsync(ConfigureProvider.Types.Request request)
     {
         var cfg = _serializer.DeserializeDynamicValue<Configuration>(request.Config);
         Config.Data = cfg.Data;
